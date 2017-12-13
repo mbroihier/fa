@@ -1,0 +1,19 @@
+h1 {
+    text-align: center;
+}
+
+label {
+    text-align: left;
+}
+
+input {
+    text-align: center;
+}
+
+body {
+    font-family: verdana;
+    color: #000000;
+    margin-top: 10px;
+    text-align: left;
+}
+
