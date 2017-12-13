@@ -5,15 +5,13 @@ window.onload = function(){
     document.getElementById("value").onkeyup = function(event) {
         let fieldContents = parseInt(valueElement.value);
         if (fieldContents >= 0 && fieldContents < 256) {
-	    let mask = 1;
-	    for (let i = 0; i < 8; i++) {
-		rule[i] = ((fieldContents & mask) != 0) ? 1 : 0;
-		mask = mask << 1;
-	    }
-	    drawRule(fieldContents, ctx);
+	    newRule = true;
+	    number = fieldContents;
         }
     };
     var valueElement = document.getElementById("value");
+
+    valueElement.focus();
     
     drawRule(129, ctx);
 };
@@ -24,7 +22,12 @@ var drawRule = function(value, ctx){
 	pseudoImageArray.push(0);
     }
     pseudoImageArray[100] = 1;
-    
+
+    let mask = 1;
+    for (let i = 0; i < 8; i++) {
+	rule[i] = ((value & mask) != 0) ? 1 : 0;
+	mask = mask << 1;
+    }
     let pixelOn = "rgba(255,255,255,1.0)";
     let pixelOff = "rgba(0,0,0,1.0)";
     for (let y = 100; y < 200; y++) {
@@ -69,8 +72,18 @@ var drawRule = function(value, ctx){
 
 var rule = [ 1, 0, 0, 0, 0, 0, 0, 1];
 
+var newRule = false;
+var number = 129;
+
 var fa = function(left, center, right) {
     return rule[(left<<2) + (center<<1) + right];
 };
 
-
+setInterval(function() {
+    if (newRule) {
+        var ctx = document.getElementById("canvas").getContext("2d");
+        let start = Date.now();
+	drawRule(number, ctx);
+	newRule = false;
+    }
+}, 3000);
