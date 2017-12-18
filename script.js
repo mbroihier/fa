@@ -13,9 +13,9 @@ window.onload = function(){
 
     valueElement.focus();
     
-    drawRule(129, ctx);
+    drawRule(number, ctx);
     var ctx2 = document.getElementById("canvas2").getContext("2d");
-    drawReversibleRule(41, ctx2);
+    drawReversibleRule(number, ctx2);
 };
 var drawRule = function(value, ctx){
     let pseudoImageArray = [];
@@ -33,12 +33,12 @@ var drawRule = function(value, ctx){
     }
     let pixelWhite = "rgba(255,255,255,1.0)";
     let pixelBlack = "rgba(0,0,0,1.0)";
-    for (let y = 100; y < 200; y++) {
+    for (let y = 0; y < 100; y++) {
 	let left = 0;
 	let center = 0;
 	let right = 0;
 	for (let x = 0; x < 200; x++) {
-	    if (y == 100) {
+	    if (y == 0) {
 		if (pseudoImageArray[x] == 1) {
 		    ctx.fillStyle = pixelBlack;
 		} else {
@@ -93,13 +93,13 @@ var drawReversibleRule = function(value, ctx){
     }
     let pixelWhite = "rgba(255,255,255,1.0)";
     let pixelBlack = "rgba(0,0,0,1.0)";
-    for (let y = 100; y < 200; y++) {
+    for (let y = 0; y < 100; y++) {
 	let left = 0;
 	let center = 0;
 	let right = 0; 
 	for (let x = 0; x < 200; x++) {
 	    
-	    if (y == 100) {
+	    if (y == 0) {
 		if (pseudoImageArray[1][x] == 1) {
 		    ctx.fillStyle = pixelBlack;
 		} else {
@@ -151,18 +151,28 @@ var drawReversibleRule = function(value, ctx){
 
 var newRule = false;
 var number = 129;
+var cycleStartInterval = 0;
 
 var fa = function(left, center, right, rule) {
     return rule[(left<<2) + (center<<1) + right];
 };
 
 setInterval(function() {
+    var ctx = document.getElementById("canvas").getContext("2d");
+    var ctx2 = document.getElementById("canvas2").getContext("2d");
+    let start = Date.now();
     if (newRule) {
-        var ctx = document.getElementById("canvas").getContext("2d");
-        var ctx2 = document.getElementById("canvas2").getContext("2d");
-        let start = Date.now();
 	drawRule(number, ctx);
 	drawReversibleRule(number, ctx2);
 	newRule = false;
+    } else {
+	cycleStartInterval++;
+	if (cycleStartInterval > 3) {
+	    cycleStartInterval = 0;
+	    number = (number + 1) % 256;
+            document.getElementById("value").value = number;
+	    drawRule(number, ctx);
+	    drawReversibleRule(number,ctx2);
+	}
     }
-}, 3000);
+}, 1000);
