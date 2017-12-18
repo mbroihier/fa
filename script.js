@@ -76,13 +76,13 @@ var drawRule = function(value, ctx){
 var drawReversibleRule = function(value, ctx){
     let pseudoImageArray = [];
     let start = Date.now();
-    let columns = [];
-    for (let i = 0; i < 200; i++) {
+    for (let j = 0; j < 2; j++) {
+      let columns = [];
+      for (let i = 0; i < 200; i++) {
 	columns.push(0);
+      }
+      pseudoImageArray.push(columns);
     }
-    pseudoImageArray.push(columns);
-    pseudoImageArray.push(columns);
-    //pseudoImageArray[0][100] = 1; // 1 is black
     pseudoImageArray[1][100] = 1; // 1 is black
 
     let rule = [0, 0, 0, 0, 0, 0, 0, 0];
@@ -96,7 +96,7 @@ var drawReversibleRule = function(value, ctx){
     for (let y = 100; y < 200; y++) {
 	let left = 0;
 	let center = 0;
-	let right = 0;
+	let right = 0; 
 	for (let x = 0; x < 200; x++) {
 	    
 	    if (y == 100) {
@@ -124,21 +124,21 @@ var drawReversibleRule = function(value, ctx){
 		    if (fa(left, center, right, rule) == 0) {
 		        ctx.fillStyle = pixelBlack;
 	                pseudoImageArray[1][x] = 1;
-		        pseudoImageArray[0][x] = 1;
+		        pseudoImageArray[0][x] = center;
   	            } else {
 		        ctx.fillStyle = pixelWhite;
 		        pseudoImageArray[1][x] = 0;
-		        pseudoImageArray[0][x] = 0;
+		        pseudoImageArray[0][x] = center;
 		    }
 		} else { // if white, don't flip
 		    if (fa(left, center, right, rule) == 1) {
 		        ctx.fillStyle = pixelBlack;
 		        pseudoImageArray[1][x] = 1;
-		        pseudoImageArray[0][x] = 1;
+		        pseudoImageArray[0][x] = center;
 		    } else {
 		        ctx.fillStyle = pixelWhite;
 		        pseudoImageArray[1][x] = 0;
-		        pseudoImageArray[0][x] = 0;
+		        pseudoImageArray[0][x] = center;
 		    }
 		}
 	    }
