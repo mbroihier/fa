@@ -1,7 +1,8 @@
 window.onload = function(){
-    var c = document.getElementById("canvas");
-    var ctx = c.getContext("2d");
+    var c = document.getElementById("canvas1");
+    var ctx1 = c.getContext("2d");
     let start = Date.now();
+    // Install event handler to handle manual rule number changes
     document.getElementById("value").onkeyup = function(event) {
         let fieldContents = parseInt(valueElement.value);
         if (fieldContents >= 0 && fieldContents < 256) {
@@ -10,13 +11,15 @@ window.onload = function(){
         }
     };
     var valueElement = document.getElementById("value");
-
+    // On load, set focus to rule number field and value to initial value
     valueElement.focus();
-    
-    drawRule(number, ctx);
+    document.getElementById("value").value = number;
+    // Draw the first time
+    drawRule(number, ctx1);
     var ctx2 = document.getElementById("canvas2").getContext("2d");
     drawReversibleRule(number, ctx2);
 };
+// Implement a display function to show the first 100 iterations of Wolfram's rule
 var drawRule = function(value, ctx){
     let pseudoImageArray = [];
     let start = Date.now();
@@ -73,6 +76,7 @@ var drawRule = function(value, ctx){
     console.log("time: " + (stop - start));
 };
 
+// Implement a display function to show the first 100 iterations of Wolfram's reversible rule
 var drawReversibleRule = function(value, ctx){
     let pseudoImageArray = [];
     let start = Date.now();
@@ -153,26 +157,27 @@ var newRule = false;
 var number = 129;
 var cycleStartInterval = 0;
 
+// Finite Automata function - given rule and current state of a pixel and it's neighbors, calculate the next state
 var fa = function(left, center, right, rule) {
     return rule[(left<<2) + (center<<1) + right];
 };
 
+// Update the rule number to display all 256 possible rules
 setInterval(function() {
-    var ctx = document.getElementById("canvas").getContext("2d");
+    var ctx1 = document.getElementById("canvas1").getContext("2d");
     var ctx2 = document.getElementById("canvas2").getContext("2d");
     let start = Date.now();
     if (newRule) {
-	drawRule(number, ctx);
-	drawReversibleRule(number, ctx2);
 	newRule = false;
+        cycleStartInterval = 0;
     } else {
 	cycleStartInterval++;
 	if (cycleStartInterval > 3) {
 	    cycleStartInterval = 0;
 	    number = (number + 1) % 256;
             document.getElementById("value").value = number;
-	    drawRule(number, ctx);
-	    drawReversibleRule(number,ctx2);
 	}
     }
+    drawRule(number, ctx1);
+    drawReversibleRule(number, ctx2);
 }, 1000);
