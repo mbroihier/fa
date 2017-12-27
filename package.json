@@ -1,0 +1,16 @@
+{
+  "name": "fa-server",
+  "version": "1.0.0",
+  "description": "This server brings up finite automata examples",
+  "main": "fa.js",
+  "dependencies": {
+    "express": "^4.15.4",
+    "jsdom": "^11.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Mark Broihier",
+  "license": "MIT"
+}
